@@ -1,0 +1,138 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-image: url("https://images.hdqwalls.com/wallpapers/yokohama-bus-1f.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: beige; /* Set the default text color to beige */
+    }
+
+    /* Additional style for form content */
+    .container h2 {
+        color: #777 grey; /* Set h2 text color to black */
+    }
+
+    .container input,
+    .container label {
+        color: #777 grey; /* Set input and label text color to black */
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 mx-auto" style="margin-top: 70px">
+            <h2>Find bus</h2>
+            <form action="{% url 'findbus' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="example-email-input" class="col-2 col-form-label">From</label>
+                    <div class="col-10">
+                        <input name='source' class="form-control" type="text" id="example-email-input">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="example-email-input" class="col-2 col-form-label">Destination</label>
+                    <div class="col-10">
+                        <input name='destination' class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="example-email-input" class="col-2 col-form-label">Date</label>
+                    <div class="col-10">
+                        <input name='date' class="form-control" type="date">
+                    </div>
+                </div>
+                <!-- Additional details for each person -->
+                <div id="person-details">
+                    <div class="person">
+                        <h3>Person 1</h3>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Name</label>
+                            <div class="col-10">
+                                <input name='name[]' class="form-control" type="text" pattern="[A-Za-z ]+" title="Name should contain only alphabets and spaces">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Age</label>
+                            <div class="col-10">
+                                <input name='age[]' class="form-control" type="number">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Gender</label>
+                            <div class="col-10">
+                                <select name='gender[]' class="form-control">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Phone Number</label>
+
+                            <div class="col-10">
+                                <input name='phone[]' class="form-control" type="tel" pattern="[0-9]+" maxlength="10" title="Phone number should contain only digits and not exceed 10 digits">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" id="add-person">Add Person</button>
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-success float-right">Find bus</button>
+                </div>
+                {{error}}
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('add-person').addEventListener('click', function() {
+            var personCount = document.querySelectorAll('.person').length + 1;
+            var personDiv = document.createElement('div');
+            personDiv.className = 'person';
+            personDiv.innerHTML = `
+                <h3>Person ${personCount}</h3>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">Name</label>
+                    <div class="col-10">
+                        <input name='name[]' class="form-control" type="text" pattern="[A-Za-z ]+" title="Name should contain only alphabets and spaces">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">Age</label>
+                    <div class="col-10">
+                        <input name='age[]' class="form-control" type="number">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">Gender</label>
+                    <div class="col-10">
+                        <select name='gender[]' class="form-control">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">Phone Number</label>
+                    <div class="col-10">
+                        <input name='phone[]' class="form-control" type="tel" pattern="[0-9]+" maxlength="10" title="Phone number should contain only digits and not exceed 10 digits">
+
+                    </div>
+                </div>
+            `;
+            document.getElementById('person-details').appendChild(personDiv);
+        });
+    });
+</script>
+{% endblock %}
+
+
+
